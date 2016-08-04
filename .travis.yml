@@ -6,3 +6,6 @@ python:
 
 install:
   - pip install selenium
+
+script: 
+  - python tests.py
