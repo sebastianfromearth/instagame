@@ -23,7 +23,7 @@ driver.get(login_url)
 wait = WebDriverWait(driver, 10)
 
 #wait for spinner to disappear then login
-login_link = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "a._k6cv7")))
+login_link = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "a._fcn8k")))
 webdriver.ActionChains(driver).move_to_element(login_link).click(login_link).perform()
 WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "input[name='username']"))).send_keys(username)
 WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "input[name='password']"))).send_keys(password)
