@@ -14,7 +14,7 @@ import time
 login_url = "https://www.instagram.com/"
 username = raw_input("Username: ")
 password = raw_input("Password: ")
-url = login_url + username + "/"
+url_list = ["https://www.instagram.com/instagram/", "https://www.instagram.com/instagramjapan/", "https://www.instagram.com/instagramrussia/", "https://www.instagram.com/instagrambrasil/", "https://www.instagram.com/instagramde/", "https://www.instagram.com/instagramfr/", "https://www.instagram.com/instagrames/", "https://www.instagram.com/vsco/"]
 
 driver = webdriver.Firefox()
 driver.maximize_window()
@@ -40,27 +40,20 @@ for times_to_repeat_counter in range(1,40):
 	tags_to_explore = 1
 	hashtag_list = ["travel", "europe", "explore", "igers", "holidays", "instadaily", "love", "food"]
 
-	#navigate to profile
-	driver.get(url)
-
-	#click following button
-	following_link = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "._9o0bc li:nth-child(3) a._s53mj")))
-	webdriver.ActionChains(driver).move_to_element(following_link).click(following_link).perform()
-
-	for account_to_follow_unfollow_counter in range(1,9):
-		string_counter = str(account_to_follow_unfollow_counter)
+	#navigate to accounts to follow and unfollow
+	for url in url_list:
+		driver.get(url)
+		
 		#unfollow
-		follow_button = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "._539vh li:nth-child(%s) button._aj7mu" % string_counter )))
+		follow_button = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "button._aj7mu" )))
 		webdriver.ActionChains(driver).move_to_element(follow_button).click(follow_button).perform()
 
 		#wait till elements are clickable again
-		element = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, '._539vh li:nth-child(%s) button._aj7mu' % string_counter )))
+		element = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button._aj7mu' )))
 
 		#follow
-		follow_button = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "._539vh li:nth-child(%s) button._aj7mu" % string_counter)))
+		follow_button = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "button._aj7mu")))
 		webdriver.ActionChains(driver).move_to_element(follow_button).click(follow_button).perform()
-
-		account_to_follow_unfollow_counter =+ 1
 
 	#explore travel hashtags
 	for tags_to_explore in range(1,9):
