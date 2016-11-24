@@ -9,14 +9,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
+from creds import username, password
 import time
 
 login_url = "https://www.instagram.com/"
-username = raw_input("Username: ")
-password = raw_input("Password: ")
 url_list = ["https://www.instagram.com/instagram/", "https://www.instagram.com/instagramjapan/", "https://www.instagram.com/instagramrussia/", "https://www.instagram.com/instagrambrasil/", "https://www.instagram.com/instagramde/", "https://www.instagram.com/instagramfr/", "https://www.instagram.com/instagrames/", "https://www.instagram.com/vsco/"]
 
 driver = webdriver.Firefox()
+driver.set_page_load_timeout(10)
 driver.maximize_window()
 driver.get(login_url)
 
@@ -43,7 +43,7 @@ for times_to_repeat_counter in range(1,40):
 	#navigate to accounts to follow and unfollow
 	for url in url_list:
 		driver.get(url)
-		
+
 		#unfollow
 		follow_button = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "button._aj7mu" )))
 		webdriver.ActionChains(driver).move_to_element(follow_button).click(follow_button).perform()
@@ -62,12 +62,14 @@ for times_to_repeat_counter in range(1,40):
 		webdriver.ActionChains(driver).move_to_element(thumbnail_image).click(thumbnail_image).perform()
 
 		for pictures_to_like in range(1,9):
+			#wait untill loveheart is clickable
 			element = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "a._ebwb5" )))
 
 			#like a pic
 			like_button = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "a._ebwb5" )))
 			webdriver.ActionChains(driver).move_to_element(like_button).click(like_button).perform()
 
+			#wait until right arrow is clickable
 			element = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "a._de018" )))
 
 			#nagivate to the next pic
@@ -81,7 +83,5 @@ for times_to_repeat_counter in range(1,40):
 	times_to_repeat_counter += 1
 	time.sleep(450)
 
-	
 
-
-
+driver.quit()
