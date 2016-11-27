@@ -1,0 +1,86 @@
+#!/bin/sh
+#
+# instagamed        Startup script for instagame
+#
+# chkconfig: 2345 85 15
+# processname: instagamed
+# config: /opt/instagame/creds.py
+# pidfile: /var/run/instagamed.pid
+# description: An instagram login, follow & like automation script
+#
+### BEGIN INIT INFO
+# Provides: instagamed
+# Required-Start: $local_fs $remote_fs $network
+# Required-Stop: $local_fs $remote_fs $network
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: start and stop instagamed
+### END INIT INFO
+
+# Source init functions
+. /etc/init.d/functions
+
+APP="/opt/instagame/instagame_phantomjs.py"
+PYTHON_BIN="/usr/local/bin/python2.7"
+PIDFILE="/var/run/instagamed.pid"
+LOCKFILE="/var/lock/subsys/instagamed"
+RETVAL=0
+DAEMON_USER="root"
+
+start()
+{
+  if [ -f $PIDFILE ]
+  then
+    failure
+    echo "Instagame already running... "
+  else
+    #nohup nice /usr/local/bin/python2.7 /opt/instagame/instagame_phantomjs.py > /dev/null 2>&1 &
+    daemon --user=$DAEMON_USER "$PYTHON_BIN $APP > /dev/null &"
+    RETVAL=$?
+    [ $RETVAL = 0 ] && touch $LOCKFILE
+    PID=`/bin/ps -ef | /bin/grep [i]nstagame | /bin/awk '{ print $2 }'`
+    echo $PID > $PIDFILE
+    success
+    echo "Starting Instagame:"
+  fi
+}
+
+stop()
+{
+  if [ -f $PIDFILE ]
+  then
+    killproc -p $PIDFILE $APP
+    RETVAL=$?
+    [ $RETVAL = 0 ] && rm -f $LOCKFILE $PIDFILE
+    success
+    echo "Stopping Instagame:"
+  else
+    failure
+    echo "Instagame is not running... "
+  fi
+}
+
+case "$1" in
+
+  start)
+    start
+  ;;
+
+  stop)
+    stop
+  ;;
+
+  status)
+        status $APP
+  ;;
+
+  restart)
+    stop
+    start
+  ;;
+
+  *)
+    echo "Usage: $0 {start|stop|restart|status}"
+  ;;
+
+esac
