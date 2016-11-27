@@ -34,8 +34,7 @@ start()
     failure
     echo "Instagame already running... "
   else
-    #nohup nice /usr/local/bin/python2.7 /opt/instagame/instagame_phantomjs.py > /dev/null 2>&1 &
-    daemon --user=$DAEMON_USER "$PYTHON_BIN $APP > /dev/null &"
+    daemon --user=$DAEMON_USER --pidfile="$PIDFILE" "$PYTHON_BIN $APP &"
     RETVAL=$?
     [ $RETVAL = 0 ] && touch $LOCKFILE
     PID=`/bin/ps -ef | /bin/grep [i]nstagame | /bin/awk '{ print $2 }'`

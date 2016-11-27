@@ -14,10 +14,10 @@ import time, logging
 
 #logging.basicConfig(level=logging.ERROR)
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.ERROR)
+logger.setLevel(logging.INFO)
 # create a file handler
-handler = logging.FileHandler('instagame.log', 'a')
-handler.setLevel(logging.ERROR)
+handler = logging.FileHandler('/var/log/instagame.log', 'a')
+handler.setLevel(logging.INFO)
 # create a logging format
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
@@ -52,12 +52,10 @@ try:
 		pictures_to_like = 1
 		tags_to_explore = 1
 		logger.info('times_to_repeat_counter %s' % times_to_repeat_counter)
-		logger.warn('times_to_repeat_counter %s' % times_to_repeat_counter)
 
 		#navigate to accounts to follow and unfollow
 		for url in url_list:
 			logger.info('url_list %s' % url)
-			logger.warn('url_list %s' % url)
 
 			driver.get(url)
 
@@ -75,7 +73,6 @@ try:
 		#explore travel hashtags
 		for tags_to_explore in range(1,9):
 			logger.info('tags_to_explore %s' % tags_to_explore)
-			logger.warn('tags_to_explore %s' % tags_to_explore)
 
 			driver.get("https://www.instagram.com/explore/tags/%s/" % hashtag_list[tags_to_explore - 1] )
 			thumbnail_image = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "._nljxa ._myci9 a._8mlbc" )))
@@ -83,7 +80,6 @@ try:
 
 			for pictures_to_like in range(1,9):
 				logger.info('pictures_to_like %s' % pictures_to_like)
-				logger.warn('pictures_to_like %s' % pictures_to_like)
 
 				#wait untill loveheart is clickable
 				element = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "a._ebwb5" )))
@@ -104,7 +100,7 @@ try:
 			tags_to_explore =+ 1
 
 		times_to_repeat_counter += 1
-		time.sleep(450)
+		time.sleep(900)
 
 except Exception, e:
 	print e
