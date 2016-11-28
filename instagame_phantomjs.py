@@ -41,8 +41,11 @@ wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "input[name='passw
 login_button = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "button")))
 webdriver.ActionChains(driver).move_to_element(login_button).click(login_button).perform()
 
-#wait for login to complete
-personal_account_link = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "a._soakw" )))
+try:
+	#wait for login to complete
+	personal_account_link = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "a._soakw" )))
+except Exception, e:
+	driver.save_screenshot('screenshot.png')
 
 times_to_repeat_counter = 1
 
