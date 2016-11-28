@@ -46,19 +46,18 @@ personal_account_link = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, 
 
 times_to_repeat_counter = 1
 
-try:
-	driver.maximize_window()
-	for times_to_repeat_counter in range(1,40):
-		pictures_to_like = 1
-		tags_to_explore = 1
-		logger.info('times_to_repeat_counter %s' % times_to_repeat_counter)
+driver.maximize_window()
+for times_to_repeat_counter in range(1,40):
+	pictures_to_like = 1
+	tags_to_explore = 1
+	logger.info('times_to_repeat_counter %s' % times_to_repeat_counter)
 
-		#navigate to accounts to follow and unfollow
-		for url in url_list:
-			logger.info('url_list %s' % url)
+	#navigate to accounts to follow and unfollow
+	for url in url_list:
+		logger.info('url_list %s' % url)
 
-			driver.get(url)
-
+		driver.get(url)
+		try:
 			#unfollow
 			follow_button = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "button._aj7mu" )))
 			webdriver.ActionChains(driver).move_to_element(follow_button).click(follow_button).perform()
@@ -69,18 +68,23 @@ try:
 			#follow
 			follow_button = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "button._aj7mu")))
 			webdriver.ActionChains(driver).move_to_element(follow_button).click(follow_button).perform()
+		except Exception, e:
+			driver.save_screenshot('screenshot.png')
+			driver.maximize_window()
+			continue
 
-		#explore travel hashtags
-		for tags_to_explore in range(1,9):
-			logger.info('tags_to_explore %s' % tags_to_explore)
+	#explore travel hashtags
+	for tags_to_explore in range(1,9):
+		logger.info('tags_to_explore %s' % tags_to_explore)
 
-			driver.get("https://www.instagram.com/explore/tags/%s/" % hashtag_list[tags_to_explore - 1] )
-			thumbnail_image = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "._nljxa ._myci9 a._8mlbc" )))
-			webdriver.ActionChains(driver).move_to_element(thumbnail_image).click(thumbnail_image).perform()
+		driver.get("https://www.instagram.com/explore/tags/%s/" % hashtag_list[tags_to_explore - 1] )
+		thumbnail_image = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "._nljxa ._myci9 a._8mlbc" )))
+		webdriver.ActionChains(driver).move_to_element(thumbnail_image).click(thumbnail_image).perform()
 
-			for pictures_to_like in range(1,9):
-				logger.info('pictures_to_like %s' % pictures_to_like)
+		for pictures_to_like in range(1,9):
+			logger.info('pictures_to_like %s' % pictures_to_like)
 
+			try:
 				#wait untill loveheart is clickable
 				element = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "a._ebwb5" )))
 
@@ -94,17 +98,16 @@ try:
 				#nagivate to the next pic
 				right_button = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "a._de018.coreSpriteRightPaginationArrow" )))
 				webdriver.ActionChains(driver).move_to_element(right_button).click(right_button).perform()
+			except Exception, e:
+				driver.save_screenshot('screenshot.png')
+				driver.maximize_window()
+				continue
 
-				pictures_to_like =+ 1
+			pictures_to_like =+ 1
 
-			tags_to_explore =+ 1
+		tags_to_explore =+ 1
 
-		times_to_repeat_counter += 1
-		time.sleep(900)
-
-except Exception, e:
-	print e
-	driver.save_screenshot('screenshot.png')
-	driver.quit()
+	times_to_repeat_counter += 1
+	time.sleep(900)
 
 driver.quit()
