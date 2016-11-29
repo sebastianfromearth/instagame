@@ -28,7 +28,7 @@ login_url = "https://www.instagram.com/"
 url_list = ["https://www.instagram.com/instagram/", "https://www.instagram.com/instagramjapan/", "https://www.instagram.com/instagramrussia/", "https://www.instagram.com/instagrambrasil/", "https://www.instagram.com/instagramde/", "https://www.instagram.com/instagramfr/", "https://www.instagram.com/instagrames/", "https://www.instagram.com/vsco/"]
 hashtag_list = ["travel", "europe", "explore", "igers", "holidays", "instadaily", "love", "food"]
 
-driver = webdriver.PhantomJS()
+driver = webdriver.PhantomJS(service_args=['--ignore-ssl-errors=true'])
 driver.set_page_load_timeout(10)
 driver.get(login_url)
 wait = WebDriverWait(driver, 10, poll_frequency=0.5, ignored_exceptions=None)

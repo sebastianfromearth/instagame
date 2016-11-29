@@ -51,6 +51,7 @@ stop()
     killproc -p $PIDFILE $APP
     RETVAL=$?
     [ $RETVAL = 0 ] && rm -f $LOCKFILE $PIDFILE
+    killall -9 node phantomjs
     success
     echo "Stopping Instagame:"
   else
