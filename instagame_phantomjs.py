@@ -50,7 +50,7 @@ except Exception, e:
 times_to_repeat_counter = 1
 
 driver.maximize_window()
-for times_to_repeat_counter in range(1,40):
+for times_to_repeat_counter in range(1,400):
 	pictures_to_like = 1
 	tags_to_explore = 1
 	logger.info('times_to_repeat_counter %s' % times_to_repeat_counter)
